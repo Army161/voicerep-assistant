@@ -2,6 +2,9 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
+// Untyped client reference for tables not yet in generated types
+const db = supabase as any;
+
 interface Profile {
   id: string;
   email: string;
