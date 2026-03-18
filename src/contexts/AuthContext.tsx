@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    setProfile(profileData as Profile);
+    setProfile(profileData);
 
     if (profileData.default_workspace_id) {
       const { data: wsData, error: wsError } = await (supabase as any)
