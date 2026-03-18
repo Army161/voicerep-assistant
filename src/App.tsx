@@ -30,18 +30,12 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/billing" element={<Billing />} />
-            <Route path="/billing/success" element={<BillingSuccess />} />
-            <Route path="/billing/cancel" element={<BillingCancel />} />
-            <Route
-              path="/app"
-              element={<AuthGuard><Dashboard /></AuthGuard>}
-            />
-            <Route
-              path="/app/settings"
-              element={<AuthGuard><Settings /></AuthGuard>}
-            />
+            <Route path="/onboarding" element={<AuthGuard><Onboarding /></AuthGuard>} />
+            <Route path="/billing" element={<AuthGuard><Billing /></AuthGuard>} />
+            <Route path="/billing/success" element={<AuthGuard><BillingSuccess /></AuthGuard>} />
+            <Route path="/billing/cancel" element={<AuthGuard><BillingCancel /></AuthGuard>} />
+            <Route path="/app" element={<AuthGuard><Dashboard /></AuthGuard>} />
+            <Route path="/app/settings" element={<AuthGuard><Settings /></AuthGuard>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

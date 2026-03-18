@@ -1,10 +1,11 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { user, workspace, loading, refresh } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -28,6 +29,14 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
         </Button>
       </div>
     );
+  }
+
+  // Redirect to onboarding if not completed (unless already on onboarding)
+  const onboardingPaths = ["/onboarding"];
+  const billingPaths = ["/billing", "/billing/success", "/billing/cancel"];
+
+  if (!workspace.onboarding_completed && !onboardingPaths.includes(location.pathname)) {
+    return <Navigate to="/onboarding" replace />;
   }
 
   return <>{children}</>;
