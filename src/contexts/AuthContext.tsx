@@ -2,6 +2,9 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
+// Untyped client reference for tables not yet in generated types
+const db = supabase as any;
+
 interface Profile {
   id: string;
   email: string;
@@ -41,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   const fetchProfileAndWorkspace = useCallback(async (userId: string, retryCount = 0): Promise<void> => {
-    const { data: profileData, error: profileError } = await (supabase as any)
+    const { data: profileData, error: profileError } = await db
       .from("profiles")
       .select("id, email, name, default_workspace_id")
       .eq("id", userId)
@@ -61,10 +64,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    setProfile(profileData as Profile);
+    setProfile(profileData);
 
     if (profileData.default_workspace_id) {
-      const { data: wsData, error: wsError } = await (supabase as any)
+      const { data: wsData, error: wsError } = await db
         .from("workspaces")
         .select("id, name, business_type, timezone, phone, area_code, onboarding_completed")
         .eq("id", profileData.default_workspace_id)
@@ -80,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return fetchProfileAndWorkspace(userId, retryCount + 1);
       }
 
-      setWorkspace(wsData as Workspace | null);
+      setWorkspace(wsData);
     }
   }, []);
 
