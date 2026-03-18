@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return fetchProfileAndWorkspace(userId, retryCount + 1);
       }
 
-      setWorkspace(wsData as Workspace | null);
+      setWorkspace(wsData);
     }
   }, []);
 
