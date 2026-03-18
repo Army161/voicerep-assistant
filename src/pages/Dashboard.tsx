@@ -108,11 +108,12 @@ const Dashboard = () => {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow>
+                   <TableRow>
                       <TableHead>Date</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Phone</TableHead>
                       <TableHead>Source</TableHead>
+                      <TableHead>Fit</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
