@@ -64,8 +64,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setProfile(profileData);
 
     if (profileData.default_workspace_id) {
-      const { data: wsData, error: wsError } = await supabase
-        .from("workspaces" as any)
+      const { data: wsData, error: wsError } = await (supabase
+        .from("workspaces") as any)
         .select("id, name, business_type, timezone, phone, area_code, onboarding_completed")
         .eq("id", profileData.default_workspace_id)
         .maybeSingle() as { data: Workspace | null; error: any };
