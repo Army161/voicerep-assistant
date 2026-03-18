@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   const fetchProfileAndWorkspace = useCallback(async (userId: string, retryCount = 0): Promise<void> => {
-    const { data: profileData, error: profileError } = await supabase
+    const { data: profileData, error: profileError } = await (supabase as any)
       .from("profiles")
       .select("id, email, name, default_workspace_id")
       .eq("id", userId)
