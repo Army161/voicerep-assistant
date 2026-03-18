@@ -108,11 +108,12 @@ const Dashboard = () => {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow>
+                   <TableRow>
                       <TableHead>Date</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Phone</TableHead>
                       <TableHead>Source</TableHead>
+                      <TableHead>Fit</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -122,7 +123,16 @@ const Dashboard = () => {
                         <TableCell className="text-xs text-muted-foreground">{format(new Date(lead.created_at), "MMM d, h:mm a")}</TableCell>
                         <TableCell>{lead.name || "—"}</TableCell>
                         <TableCell className="font-mono text-sm">{lead.phone || "—"}</TableCell>
-                        <TableCell>{lead.source || "—"}</TableCell>
+                       <TableCell>{lead.source || "—"}</TableCell>
+                        <TableCell>
+                          {lead.metadata?.qualified === true ? (
+                            <Badge variant="default">Qualified</Badge>
+                          ) : lead.metadata?.qualified === false ? (
+                            <Badge variant="destructive">Not Qualified</Badge>
+                          ) : (
+                            <Badge variant="secondary">—</Badge>
+                          )}
+                        </TableCell>
                         <TableCell><Badge variant="secondary">{lead.status}</Badge></TableCell>
                       </TableRow>
                     ))}

@@ -15,6 +15,7 @@ import BillingSuccess from "./pages/BillingSuccess";
 import BillingCancel from "./pages/BillingCancel";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
+import Qualify from "./pages/Qualify";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/qualify" element={<Qualify />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/onboarding" element={<AuthGuard><Onboarding /></AuthGuard>} />
