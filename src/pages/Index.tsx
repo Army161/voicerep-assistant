@@ -63,9 +63,12 @@ const Index = () => {
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
             Capture leads, answer questions, and book appointments 24/7 — without hiring another person.
           </p>
-          <div className="mt-10">
+          <div className="mt-10 flex items-center justify-center gap-4">
             <Button size="lg" asChild>
               <Link to="/login">Get Started</Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link to="/qualify">See If You Qualify</Link>
             </Button>
           </div>
         </div>

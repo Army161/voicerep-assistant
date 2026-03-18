@@ -123,7 +123,16 @@ const Dashboard = () => {
                         <TableCell className="text-xs text-muted-foreground">{format(new Date(lead.created_at), "MMM d, h:mm a")}</TableCell>
                         <TableCell>{lead.name || "—"}</TableCell>
                         <TableCell className="font-mono text-sm">{lead.phone || "—"}</TableCell>
-                        <TableCell>{lead.source || "—"}</TableCell>
+                       <TableCell>{lead.source || "—"}</TableCell>
+                        <TableCell>
+                          {lead.metadata?.qualified === true ? (
+                            <Badge variant="default">Qualified</Badge>
+                          ) : lead.metadata?.qualified === false ? (
+                            <Badge variant="destructive">Not Qualified</Badge>
+                          ) : (
+                            <Badge variant="secondary">—</Badge>
+                          )}
+                        </TableCell>
                         <TableCell><Badge variant="secondary">{lead.status}</Badge></TableCell>
                       </TableRow>
                     ))}
