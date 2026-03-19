@@ -15,7 +15,7 @@ import AddressAutocomplete, { type NominatimResult } from "@/components/AddressA
 
 const CompetitorMap = lazy(() => import("@/components/CompetitorMap"));
 
-const db = supabase as any;
+
 
 const BUSINESS_TYPES = [
   { value: "dental", label: "Dental Practice", qualified: true },
