@@ -15,6 +15,7 @@ import BillingSuccess from "./pages/BillingSuccess";
 import BillingCancel from "./pages/BillingCancel";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
+import AdminLeads from "./pages/AdminLeads";
 import Qualify from "./pages/Qualify";
 import NotFound from "./pages/NotFound";
 
