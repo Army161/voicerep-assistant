@@ -15,7 +15,7 @@ import AddressAutocomplete, { type NominatimResult } from "@/components/AddressA
 
 const CompetitorMap = lazy(() => import("@/components/CompetitorMap"));
 
-const db = supabase as any;
+
 
 const BUSINESS_TYPES = [
   { value: "dental", label: "Dental Practice", qualified: true },
@@ -143,28 +143,27 @@ const Qualify = () => {
     const qualification = qualify(data);
 
     try {
-      await db.from("leads").insert({
-        name: data.name,
-        phone: data.phone,
-        email: data.email,
-        source: "website_qualify",
-        status: qualification.qualified ? "new" : "unqualified",
-        metadata: {
-          business_name: data.businessName,
-          business_type: data.businessType,
-          call_volume: data.callVolume,
+      await supabase.functions.invoke("submit-lead", {
+        body: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          businessName: data.businessName,
+          businessType: data.businessType,
+          callVolume: data.callVolume,
           address: data.address,
-          lat: location?.lat,
-          lon: location?.lon,
-          city: location?.city,
-          state: location?.state,
-          qualification_score: qualification.score,
-          qualified: qualification.qualified,
+          metadata: {
+            lat: location?.lat,
+            lon: location?.lon,
+            city: location?.city,
+            state: location?.state,
+            qualification_score: qualification.score,
+            qualified: qualification.qualified,
+          },
         },
-        workspace_id: "00000000-0000-0000-0000-000000000000",
       });
     } catch {
-      // Public insert blocked by RLS — result still shows
+      // Edge function error — result still shows
     }
 
     setResult(qualification);
