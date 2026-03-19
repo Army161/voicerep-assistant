@@ -193,21 +193,30 @@ export type Database = {
           created_at: string
           id: string
           status: string
+          twilio_phone_number: string | null
           twilio_sid: string | null
+          vapi_assistant_id: string | null
+          vapi_tool_ids: Json | null
           workspace_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           status?: string
+          twilio_phone_number?: string | null
           twilio_sid?: string | null
+          vapi_assistant_id?: string | null
+          vapi_tool_ids?: Json | null
           workspace_id: string
         }
         Update: {
           created_at?: string
           id?: string
           status?: string
+          twilio_phone_number?: string | null
           twilio_sid?: string | null
+          vapi_assistant_id?: string | null
+          vapi_tool_ids?: Json | null
           workspace_id?: string
         }
         Relationships: [
