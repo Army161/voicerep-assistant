@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Verify the caller is authenticated
+  // Verify caller is authenticated
   const authHeader = req.headers.get("Authorization");
   if (!authHeader?.startsWith("Bearer ")) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -38,16 +38,25 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Parse params from body (POST)
+  let status = "all";
+  let limit = 100;
+  let offset = 0;
+
+  try {
+    const body = await req.json();
+    if (body.status) status = body.status;
+    if (body.limit) limit = Math.min(Number(body.limit), 500);
+    if (body.offset) offset = Number(body.offset);
+  } catch {
+    // no body, use defaults
+  }
+
   // Use service role to read public workspace leads
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
-
-  const url = new URL(req.url);
-  const status = url.searchParams.get("status");
-  const limit = Math.min(parseInt(url.searchParams.get("limit") || "100"), 500);
-  const offset = parseInt(url.searchParams.get("offset") || "0");
 
   let query = supabase
     .from("leads")

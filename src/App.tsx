@@ -38,6 +38,7 @@ const App = () => (
             <Route path="/billing/success" element={<AuthGuard><BillingSuccess /></AuthGuard>} />
             <Route path="/billing/cancel" element={<AuthGuard><BillingCancel /></AuthGuard>} />
             <Route path="/app" element={<AuthGuard><Dashboard /></AuthGuard>} />
+            <Route path="/app/leads" element={<AuthGuard><AdminLeads /></AuthGuard>} />
             <Route path="/app/settings" element={<AuthGuard><Settings /></AuthGuard>} />
             <Route path="*" element={<NotFound />} />
           </Routes>

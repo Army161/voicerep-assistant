@@ -23,12 +23,6 @@ const AdminLeads = () => {
   const fetchLeads = useCallback(async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("get-public-leads", {
-        body: null,
-        method: "GET",
-      });
-
-      // functions.invoke doesn't support GET params well, use POST instead
       const response = await supabase.functions.invoke("get-public-leads", {
         body: { status: statusFilter, limit: PAGE_SIZE, offset: page * PAGE_SIZE },
       });
