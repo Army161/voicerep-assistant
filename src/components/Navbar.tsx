@@ -25,6 +25,9 @@ const Navbar = () => {
               <Button variant="ghost" asChild>
                 <Link to="/app">Dashboard</Link>
               </Button>
+              <Button variant="ghost" asChild>
+                <Link to="/app/leads">Leads</Link>
+              </Button>
               <Button variant="outline" onClick={handleSignOut}>
                 Sign out
               </Button>
