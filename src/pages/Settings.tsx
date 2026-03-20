@@ -122,6 +122,19 @@ const Settings = () => {
             </Button>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Billing & Subscription</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">Manage your subscription, update payment method, or cancel your plan through the billing portal.</p>
+            <Button variant="outline" onClick={handleManageBilling} disabled={portalLoading}>
+              {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Manage Billing
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
