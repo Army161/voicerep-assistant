@@ -8,8 +8,8 @@ const corsHeaders = {
 };
 
 const PRICE_TO_PLAN: Record<string, string> = {
-  "price_1TDAoRAbl55skAktEXwvvnBA": "starter",
-  "price_1TDAouAbl55skAkt5rJCp7Rz": "pro",
+  "price_1TDB19Abl55skAktwLIV9jFX": "starter",
+  "price_1TDB1SAbl55skAkt6j3Yx4zA": "pro",
 };
 
 Deno.serve(async (req) => {
