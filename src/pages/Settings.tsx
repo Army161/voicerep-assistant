@@ -31,6 +31,24 @@ const Settings = () => {
   const [areaCode, setAreaCode] = useState("");
   const [saving, setSaving] = useState(false);
   const [provStatus, setProvStatus] = useState<string | null>(null);
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const handleManageBilling = async () => {
+    setPortalLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("customer-portal");
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      } else {
+        throw new Error("No portal URL returned");
+      }
+    } catch (err: any) {
+      toast({ title: "Could not open billing portal", description: err.message, variant: "destructive" });
+    } finally {
+      setPortalLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (workspace) {
