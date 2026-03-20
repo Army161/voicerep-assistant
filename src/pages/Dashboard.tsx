@@ -15,7 +15,7 @@ import { format } from "date-fns";
 const db = supabase as any;
 
 const Dashboard = () => {
-  const { workspace } = useAuth();
+  const { workspace, subscription } = useAuth();
   const [provisioning, setProvisioning] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [calls, setCalls] = useState<any[]>([]);
