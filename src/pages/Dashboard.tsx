@@ -15,7 +15,7 @@ import { format } from "date-fns";
 const db = supabase as any;
 
 const Dashboard = () => {
-  const { workspace } = useAuth();
+  const { workspace, subscription } = useAuth();
   const [provisioning, setProvisioning] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [calls, setCalls] = useState<any[]>([]);
@@ -55,46 +55,56 @@ const Dashboard = () => {
           <Button variant="outline" asChild><Link to="/app/settings">Settings</Link></Button>
         </div>
 
-        {/* Provisioning */}
-        <Card className="mb-6">
-          <CardHeader><CardTitle className="flex items-center gap-2"><Phone className="h-5 w-5" /> AI Phone Line</CardTitle></CardHeader>
-          <CardContent>
-            {loadingProv ? (
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            ) : provisioning ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Status:</span>
-                  <Badge variant={provisioning.status === "succeeded" ? "default" : provisioning.status === "failed" ? "destructive" : "secondary"}>
-                    {provisioning.status === "succeeded" ? "Active" : provisioning.status === "pending" ? "Setting up…" : provisioning.status}
-                  </Badge>
-                </div>
-                {provisioning.twilio_phone_number && (
+        {/* Provisioning - only show when subscribed */}
+        {subscription.subscribed ? (
+          <Card className="mb-6">
+            <CardHeader><CardTitle className="flex items-center gap-2"><Phone className="h-5 w-5" /> AI Phone Line</CardTitle></CardHeader>
+            <CardContent>
+              {loadingProv ? (
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+              ) : provisioning ? (
+                <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">Your number:</span>
-                    <span className="font-mono text-lg font-semibold text-foreground">{provisioning.twilio_phone_number}</span>
+                    <span className="text-sm text-muted-foreground">Status:</span>
+                    <Badge variant={provisioning.status === "succeeded" ? "default" : provisioning.status === "failed" ? "destructive" : "secondary"}>
+                      {provisioning.status === "succeeded" ? "Active" : provisioning.status === "pending" ? "Setting up…" : provisioning.status}
+                    </Badge>
                   </div>
-                )}
-                {provisioning.status === "pending" && (
-                  <div className="flex items-center gap-2 rounded-md border border-border bg-muted/50 p-3">
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Provisioning your AI phone line. This usually takes under a minute.</span>
-                  </div>
-                )}
-                {provisioning.status === "failed" && (
-                  <div className="rounded-md border border-destructive/30 bg-destructive/10 p-3">
-                    <p className="text-sm text-destructive">Provisioning failed. Please retry or contact support.</p>
-                    <Button variant="outline" size="sm" className="mt-2" asChild>
-                      <Link to="/app/billing/success">Retry Provisioning</Link>
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No provisioning record found. Complete onboarding and billing first.</p>
-            )}
-          </CardContent>
-        </Card>
+                  {provisioning.twilio_phone_number && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Your number:</span>
+                      <span className="font-mono text-lg font-semibold text-foreground">{provisioning.twilio_phone_number}</span>
+                    </div>
+                  )}
+                  {provisioning.status === "pending" && (
+                    <div className="flex items-center gap-2 rounded-md border border-border bg-muted/50 p-3">
+                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">Provisioning your AI phone line. This usually takes under a minute.</span>
+                    </div>
+                  )}
+                  {provisioning.status === "failed" && (
+                    <div className="rounded-md border border-destructive/30 bg-destructive/10 p-3">
+                      <p className="text-sm text-destructive">Provisioning failed. Please retry or contact support.</p>
+                      <Button variant="outline" size="sm" className="mt-2" asChild>
+                        <Link to="/app/billing/success">Retry Provisioning</Link>
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">No provisioning record found. Please contact support.</p>
+              )}
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="mb-6">
+            <CardHeader><CardTitle className="flex items-center gap-2"><Phone className="h-5 w-5" /> AI Phone Line</CardTitle></CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-3">Subscribe to a plan to activate your AI phone line.</p>
+              <Button asChild><Link to="/billing">Choose a Plan</Link></Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Leads */}
         <Card className="mb-6">
