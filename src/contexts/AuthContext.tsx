@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -22,15 +22,25 @@ interface Workspace {
   onboarding_completed: boolean;
 }
 
+interface SubscriptionStatus {
+  subscribed: boolean;
+  plan: string | null;
+  subscriptionEnd: string | null;
+}
+
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
   workspace: Workspace | null;
+  subscription: SubscriptionStatus;
   loading: boolean;
   refresh: () => Promise<void>;
+  refreshSubscription: () => Promise<void>;
   signOut: () => Promise<void>;
 }
+
+const DEFAULT_SUBSCRIPTION: SubscriptionStatus = { subscribed: false, plan: null, subscriptionEnd: null };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -41,7 +51,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
+  const [subscription, setSubscription] = useState<SubscriptionStatus>(DEFAULT_SUBSCRIPTION);
   const [loading, setLoading] = useState(true);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const checkSubscription = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke("check-subscription");
+      if (error) {
+        console.error("Error checking subscription:", error);
+        return;
+      }
+      setSubscription({
+        subscribed: data?.subscribed ?? false,
+        plan: data?.plan ?? null,
+        subscriptionEnd: data?.subscription_end ?? null,
+      });
+    } catch (err) {
+      console.error("Failed to check subscription:", err);
+    }
+  }, []);
 
   const fetchProfileAndWorkspace = useCallback(async (userId: string, retryCount = 0): Promise<void> => {
     const { data: profileData, error: profileError } = await db
@@ -90,8 +119,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refresh = useCallback(async () => {
     if (user) {
       await fetchProfileAndWorkspace(user.id);
+      await checkSubscription();
     }
-  }, [user, fetchProfileAndWorkspace]);
+  }, [user, fetchProfileAndWorkspace, checkSubscription]);
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
@@ -99,10 +129,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
     setProfile(null);
     setWorkspace(null);
+    setSubscription(DEFAULT_SUBSCRIPTION);
   }, []);
 
+  // Periodic subscription refresh (every 60s)
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+    if (user) {
+      checkSubscription();
+      intervalRef.current = setInterval(checkSubscription, 60_000);
+    } else {
+      setSubscription(DEFAULT_SUBSCRIPTION);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [user, checkSubscription]);
+
+  useEffect(() => {
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
@@ -112,6 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else {
           setProfile(null);
           setWorkspace(null);
+          setSubscription(DEFAULT_SUBSCRIPTION);
         }
         setLoading(false);
       }
@@ -127,11 +172,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => authSub.unsubscribe();
   }, [fetchProfileAndWorkspace]);
 
   return (
-    <AuthContext.Provider value={{ session, user, profile, workspace, loading, refresh, signOut }}>
+    <AuthContext.Provider value={{ session, user, profile, workspace, subscription, loading, refresh, refreshSubscription: checkSubscription, signOut }}>
       {children}
     </AuthContext.Provider>
   );
