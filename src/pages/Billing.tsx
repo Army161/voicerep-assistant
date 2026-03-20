@@ -2,8 +2,9 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const PLANS = [
   {
@@ -22,7 +23,27 @@ const PLANS = [
 
 const Billing = () => {
   const [selected, setSelected] = useState("starter");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout-session", {
+        body: { plan: selected },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err: any) {
+      toast({ title: "Checkout failed", description: err.message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -60,10 +81,10 @@ const Billing = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <Button size="lg" onClick={() => navigate("/billing/success")}>
+          <Button size="lg" onClick={handleCheckout} disabled={loading}>
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Continue with {PLANS.find((p) => p.id === selected)?.name} — ${PLANS.find((p) => p.id === selected)?.price}/mo
           </Button>
-          <p className="mt-2 text-xs text-muted-foreground">Stripe checkout will be wired in a future update.</p>
         </div>
       </div>
     </div>
