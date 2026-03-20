@@ -33,6 +33,9 @@ const Navbar = () => {
               </Button>
             </>
           ) : (
+            <Button variant="ghost" asChild>
+              <Link to="/demo">Demo</Link>
+            </Button>
             <Button asChild>
               <Link to="/login">Login</Link>
             </Button>
