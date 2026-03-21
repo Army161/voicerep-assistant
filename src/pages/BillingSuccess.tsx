@@ -48,6 +48,7 @@ const BillingSuccess = () => {
         if (data?.status === "succeeded") {
           setState("succeeded");
           setPhoneNumber(data.phone_number);
+          await refreshSubscription();
           toast({ title: "Your AI phone line is ready!" });
         } else {
           setState("failed");
