@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.vapi-tools]
 verify_jwt = false
+
+[functions.vapi-chat]
+verify_jwt = false

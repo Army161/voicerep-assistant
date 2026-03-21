@@ -141,7 +141,7 @@ const Settings = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>Billing & Subscription</CardTitle>
           </CardHeader>

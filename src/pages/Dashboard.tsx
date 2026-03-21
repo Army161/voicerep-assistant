@@ -86,7 +86,7 @@ const Dashboard = () => {
                     <div className="rounded-md border border-destructive/30 bg-destructive/10 p-3">
                       <p className="text-sm text-destructive">Provisioning failed. Please retry or contact support.</p>
                       <Button variant="outline" size="sm" className="mt-2" asChild>
-                        <Link to="/app/billing/success">Retry Provisioning</Link>
+                        <Link to="/billing/success">Retry Provisioning</Link>
                       </Button>
                     </div>
                   )}

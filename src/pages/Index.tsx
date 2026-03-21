@@ -268,9 +268,7 @@ const Index = () => {
             Autonomous Voice Reps
           </div>
           <div className="flex gap-6 text-sm text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
-            <Link to="#" className="hover:text-foreground">Privacy</Link>
-            <Link to="#" className="hover:text-foreground">Terms</Link>
-            <Link to="#" className="hover:text-foreground">Support</Link>
+            <a href="mailto:support@autonomousvoicereps.com" className="hover:text-foreground">Support</a>
           </div>
           <p className="text-sm text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
             © {new Date().getFullYear()} Autonomous Voice Reps
