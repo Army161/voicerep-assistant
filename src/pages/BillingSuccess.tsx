@@ -11,7 +11,7 @@ import { toast } from "@/hooks/use-toast";
 type ProvisionState = "idle" | "provisioning" | "succeeded" | "failed";
 
 const BillingSuccess = () => {
-  const { workspace } = useAuth();
+  const { workspace, refreshSubscription } = useAuth();
   const [state, setState] = useState<ProvisionState>("idle");
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
