@@ -130,7 +130,7 @@ const Demo = () => {
         <div className="text-center py-8 border-t">
           <h3 className="text-lg font-semibold text-foreground mb-2">Ready to never miss a lead again?</h3>
           <p className="text-sm text-muted-foreground mb-4">Your AI phone agent is set up in minutes. No contracts.</p>
-          <Link to="/billing">
+          <Link to="/login">
             <Button size="lg">
               View Plans & Pricing
               <ArrowRight className="h-4 w-4 ml-1" />

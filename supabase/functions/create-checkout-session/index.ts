@@ -77,8 +77,8 @@ Deno.serve(async (req) => {
       customer_email: customerId ? undefined : user.email!,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
-      success_url: `${origin}/app/billing/success`,
-      cancel_url: `${origin}/app/billing/cancel`,
+      success_url: `${origin}/billing/success`,
+      cancel_url: `${origin}/billing/cancel`,
       metadata: {
         user_id: user.id,
         workspace_id: profile?.default_workspace_id || "",
