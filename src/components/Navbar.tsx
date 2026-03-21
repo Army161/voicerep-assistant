@@ -17,28 +17,34 @@ const Navbar = () => {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2 text-lg font-bold text-foreground">
           <Phone className="h-5 w-5 text-primary" />
-          Autonomous Voice Reps
+          <span style={{ fontFamily: "'Playfair Display', serif" }}>Autonomous Voice Reps</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-3" style={{ fontFamily: "'Inter', sans-serif" }}>
           {user ? (
             <>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" size="sm" asChild>
                 <Link to="/app">Dashboard</Link>
               </Button>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" size="sm" asChild>
                 <Link to="/app/leads">Leads</Link>
               </Button>
-              <Button variant="outline" onClick={handleSignOut}>
+              <Button variant="outline" size="sm" className="rounded-full" onClick={handleSignOut}>
                 Sign out
               </Button>
             </>
           ) : (
             <>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="#how-it-works">How it Works</a>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="#roi-calculator">ROI Calculator</a>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
                 <Link to="/demo">Demo</Link>
               </Button>
-              <Button asChild>
-                <Link to="/login">Login</Link>
+              <Button className="rounded-full" size="sm" asChild>
+                <Link to="/login">Log In</Link>
               </Button>
             </>
           )}
