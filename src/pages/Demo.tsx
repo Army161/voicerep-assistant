@@ -132,7 +132,7 @@ const Demo = () => {
           <p className="text-sm text-muted-foreground mb-4">Your AI phone agent is set up in minutes. No contracts.</p>
           <Link to="/login">
             <Button size="lg">
-              View Plans & Pricing
+              Get Started Free
               <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </Link>
