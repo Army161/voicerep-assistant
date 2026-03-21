@@ -116,7 +116,7 @@ const Index = () => {
       </div>
 
       {/* ROI Calculator */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <section id="roi-calculator" className="px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-4xl font-bold text-foreground">See What You're Losing</h2>
           <p className="mt-3 text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
