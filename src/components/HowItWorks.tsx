@@ -1,6 +1,7 @@
 import { Phone, MessageSquare, CalendarCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -34,18 +35,40 @@ const HowItWorks = () => {
   return (
     <section className="bg-card px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <h2 className="text-center text-4xl font-bold text-foreground sm:text-5xl">How it works</h2>
-        <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5 }}
+          className="text-center text-4xl font-bold text-foreground sm:text-5xl"
+        >
+          How it works
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mx-auto mt-4 max-w-xl text-center text-muted-foreground"
+          style={{ fontFamily: "'Inter', sans-serif" }}
+        >
           A seamless handoff from a ringing phone to a booked job, while you keep your hands on your work.
-        </p>
+        </motion.p>
 
         {/* Timeline */}
         <div className="relative mt-16">
           {/* Vertical line */}
           <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-border md:block" />
 
-          {steps.map((step) => (
-            <div key={step.num} className="relative mb-20 last:mb-0">
+          {steps.map((step, idx) => (
+            <motion.div
+              key={step.num}
+              initial={{ opacity: 0, x: step.side === "left" ? -40 : 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
+              className="relative mb-20 last:mb-0"
+            >
               {/* Step number on timeline */}
               <div className="absolute left-1/2 top-4 z-10 hidden h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-background text-sm font-bold text-primary md:flex" style={{ fontFamily: "'Inter', sans-serif" }}>
                 {step.num}
@@ -67,29 +90,49 @@ const HowItWorks = () => {
                   {step.chat ? (
                     <div className="rounded-2xl bg-secondary p-5">
                       {step.chat.map((msg, i) => (
-                        <div key={i} className={`mb-2 last:mb-0 max-w-[85%] rounded-xl px-4 py-2.5 text-sm ${msg.sender === "ai" ? "mr-auto bg-card text-foreground" : "ml-auto bg-primary/15 text-foreground"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: idx * 0.15 + i * 0.2 + 0.3 }}
+                          className={`mb-2 last:mb-0 max-w-[85%] rounded-xl px-4 py-2.5 text-sm ${msg.sender === "ai" ? "mr-auto bg-card text-foreground" : "ml-auto bg-primary/15 text-foreground"}`}
+                          style={{ fontFamily: "'Inter', sans-serif" }}
+                        >
                           {msg.text}
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   ) : (
                     <div className="flex items-center justify-center rounded-2xl bg-secondary p-10">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-card shadow-sm">
+                      <motion.div
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: idx * 0.15 + 0.2, type: "spring", stiffness: 200 }}
+                        className="flex h-16 w-16 items-center justify-center rounded-full bg-card shadow-sm"
+                      >
                         <step.icon className="h-7 w-7 text-primary" />
-                      </div>
+                      </motion.div>
                     </div>
                   )}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <div className="mt-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-8 text-center"
+        >
           <Button className="rounded-full px-8" asChild>
             <Link to="/roi-calculator">Calculate Your ROI</Link>
           </Button>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
