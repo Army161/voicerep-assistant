@@ -4,7 +4,10 @@ import Navbar from "@/components/Navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Phone, MessageSquare, User, Bot, ArrowRight, Volume2, CheckCircle2 } from "lucide-react";
+import DemoChat from "@/pages/DemoChat";
+import DemoVoice from "@/pages/DemoVoice";
 
 const SAMPLE_CONVERSATION = [
   { role: "ai", text: "Good afternoon, thank you for calling Mike's Plumbing! This is our AI assistant. How can I help you today?" },
@@ -45,11 +48,25 @@ const Demo = () => {
             See Your AI Receptionist in Action
           </h1>
           <p className="mt-3 text-lg text-muted-foreground max-w-xl mx-auto">
-            Here's exactly what happens when a customer calls your business and your AI agent picks up.
+            Try voice or text before you buy.
           </p>
         </div>
 
-        {/* Conversation */}
+        {/* Interactive Demo Tabs */}
+        <Tabs defaultValue="voice" className="mb-10">
+          <TabsList className="w-full">
+            <TabsTrigger value="voice" className="flex-1">Voice</TabsTrigger>
+            <TabsTrigger value="text" className="flex-1">Text</TabsTrigger>
+          </TabsList>
+          <TabsContent value="voice">
+            <DemoVoice />
+          </TabsContent>
+          <TabsContent value="text">
+            <DemoChat />
+          </TabsContent>
+        </Tabs>
+
+        {/* Sample Conversation */}
         <Card className="mb-8">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-6 pb-4 border-b">
