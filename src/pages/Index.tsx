@@ -75,7 +75,7 @@ const Index = () => {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/15">
                     <Phone className="h-4 w-4 rotate-[135deg] text-destructive" />
                   </div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary">
                     <Phone className="h-5 w-5 text-white" />
                   </div>
                 </div>
