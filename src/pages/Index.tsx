@@ -111,7 +111,9 @@ const Index = () => {
       </section>
 
       {/* How it Works */}
-      <HowItWorks />
+      <div id="how-it-works">
+        <HowItWorks />
+      </div>
 
       {/* ROI Calculator */}
       <section className="px-4 py-20 sm:px-6 lg:px-8">
