@@ -8,7 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Phone, RefreshCw } from "lucide-react";
+import { Loader2, Phone, PhoneCall, RefreshCw } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 
@@ -23,6 +24,8 @@ const Dashboard = () => {
   const [loadingProv, setLoadingProv] = useState(true);
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingCalls, setLoadingCalls] = useState(true);
+  const [testPhone, setTestPhone] = useState("");
+  const [callingTest, setCallingTest] = useState(false);
 
   useEffect(() => {
     if (!workspace) return;
