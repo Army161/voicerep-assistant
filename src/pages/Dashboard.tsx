@@ -113,6 +113,29 @@ const Dashboard = () => {
                       </Button>
                     </div>
                   )}
+                  {provisioning.status === "succeeded" && (
+                    <div className="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
+                      <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2">
+                        <PhoneCall className="h-4 w-4 text-primary" />
+                        Test Your AI Receptionist
+                      </h4>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Enter your phone number and we'll call you so you can hear your AI assistant in action.
+                      </p>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="+1 380 444 7644"
+                          value={testPhone}
+                          onChange={(e) => setTestPhone(e.target.value)}
+                          className="max-w-[220px]"
+                        />
+                        <Button onClick={handleTestCall} disabled={callingTest} size="sm">
+                          {callingTest ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <PhoneCall className="h-4 w-4 mr-1" />}
+                          Call Me
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">No provisioning record found. Please contact support.</p>
