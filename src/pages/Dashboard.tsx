@@ -8,7 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, Phone, RefreshCw } from "lucide-react";
+import { Loader2, Phone, PhoneCall, RefreshCw } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 
@@ -23,6 +24,8 @@ const Dashboard = () => {
   const [loadingProv, setLoadingProv] = useState(true);
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [loadingCalls, setLoadingCalls] = useState(true);
+  const [testPhone, setTestPhone] = useState("");
+  const [callingTest, setCallingTest] = useState(false);
 
   useEffect(() => {
     if (!workspace) return;
@@ -44,6 +47,26 @@ const Dashboard = () => {
     if (s === "succeeded") return "default";
     if (s === "failed") return "destructive";
     return "secondary";
+  };
+
+  const handleTestCall = async () => {
+    if (!testPhone.trim()) {
+      toast({ title: "Enter a phone number", variant: "destructive" });
+      return;
+    }
+    setCallingTest(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("test-call", {
+        body: { phone_number: testPhone.trim() },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast({ title: "Test call initiated!", description: "Your phone should ring in a few seconds." });
+    } catch (err: any) {
+      toast({ title: "Failed to start test call", description: err.message, variant: "destructive" });
+    } finally {
+      setCallingTest(false);
+    }
   };
 
   return (
@@ -88,6 +111,29 @@ const Dashboard = () => {
                       <Button variant="outline" size="sm" className="mt-2" asChild>
                         <Link to="/billing/success">Retry Provisioning</Link>
                       </Button>
+                    </div>
+                  )}
+                  {provisioning.status === "succeeded" && (
+                    <div className="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
+                      <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-2">
+                        <PhoneCall className="h-4 w-4 text-primary" />
+                        Test Your AI Receptionist
+                      </h4>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Enter your phone number and we'll call you so you can hear your AI assistant in action.
+                      </p>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="+1 380 444 7644"
+                          value={testPhone}
+                          onChange={(e) => setTestPhone(e.target.value)}
+                          className="max-w-[220px]"
+                        />
+                        <Button onClick={handleTestCall} disabled={callingTest} size="sm">
+                          {callingTest ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <PhoneCall className="h-4 w-4 mr-1" />}
+                          Call Me
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>

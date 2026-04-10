@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.vapi-chat]
 verify_jwt = false
+
+[functions.test-call]
+verify_jwt = false
