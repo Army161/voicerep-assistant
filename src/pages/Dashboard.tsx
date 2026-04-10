@@ -49,6 +49,26 @@ const Dashboard = () => {
     return "secondary";
   };
 
+  const handleTestCall = async () => {
+    if (!testPhone.trim()) {
+      toast({ title: "Enter a phone number", variant: "destructive" });
+      return;
+    }
+    setCallingTest(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("test-call", {
+        body: { phone_number: testPhone.trim() },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast({ title: "Test call initiated!", description: "Your phone should ring in a few seconds." });
+    } catch (err: any) {
+      toast({ title: "Failed to start test call", description: err.message, variant: "destructive" });
+    } finally {
+      setCallingTest(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
